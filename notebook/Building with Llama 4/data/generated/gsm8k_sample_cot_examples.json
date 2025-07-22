@@ -1,0 +1,102 @@
+{
+  "summary": "Here is a summary of the document in 2-3 sentences:\n\nThe document contains 50 math problems covering various topics such as algebra, geometry, and basic arithmetic operations. The problems range from simple calculations to more complex scenarios involving multiple steps and variables. The document appears to be a collection of practice problems or a test bank for assessing mathematical skills.",
+  "cot_examples": [
+    {
+      "question": "If James writes a 3-page letter to 2 different friends twice a week, how many pages does he write in a year?",
+      "reasoning": "Step 1: First, I need to determine how many pages James writes in a week.\nStep 2: To do this, I calculate the number of pages per letter (3 pages), the number of friends (2), and the frequency (twice a week), so the total pages per week = 3 * 2 * 2 = 12 pages.\nStep 3: Since there are 52 weeks in a year, I multiply the number of pages written per week by the number of weeks in a year to get the total pages written in a year.\nStep 4: Total pages per year = 12 * 52 = 624 pages.",
+      "answer": "624"
+    },
+    {
+      "question": "If Mark has 10 yellow flowers and there are 80% more purple flowers than yellow flowers, and 25% as many green flowers as the total of yellow and purple flowers, how many flowers does Mark have?",
+      "reasoning": "Step 1: First, I need to calculate the number of purple flowers, which is 80% more than the 10 yellow flowers.\nStep 2: To find 80% of 10, I calculate 10 * 0.8 = 8, and then add this to the original 10 yellow flowers to get the number of purple flowers: 10 + 8 = 18.\nStep 3: Next, I need to find the total number of yellow and purple flowers: 10 + 18 = 28.\nStep 4: Then, I calculate 25% of 28 to find the number of green flowers: 28 * 0.25 = 7.\nStep 5: Finally, I sum the number of yellow, purple, and green flowers to get the total: 10 + 18 + 7 = 35.",
+      "answer": "35"
+    },
+    {
+      "question": "If Tina works 10 hours a day for 5 days and earns $18 an hour with overtime pay (hourly wage + 1/2 hourly wage) for hours worked beyond 8 hours, how much does she earn?",
+      "reasoning": "Step 1: First, I need to calculate Tina's earnings for the first 8 hours of work per day, which is 8 * $18 = $144.\nStep 2: Next, I calculate her earnings for the overtime hours worked per day. She works 2 hours of overtime (10 hours - 8 hours), and her overtime rate is $18 + ($18 * 0.5) = $27 per hour.\nStep 3: So, her daily overtime pay is 2 * $27 = $54.\nStep 4: Her total daily earnings are $144 (regular pay) + $54 (overtime pay) = $198.\nStep 5: For 5 days of work, Tina earns $198 * 5 = $990.",
+      "answer": "990"
+    },
+    {
+      "question": "If Ken and Tony shared money and Ken got $1750, and Tony got twice as much as Ken, how much money was shared?",
+      "reasoning": "Step 1: First, I need to determine the amount of money Tony received, which is twice the amount Ken received.\nStep 2: Since Ken received $1750, Tony received 2 * $1750 = $3500.\nStep 3: To find the total amount of money shared, I add Ken's and Tony's shares: $1750 + $3500 = $5250.",
+      "answer": "5250"
+    },
+    {
+      "question": "If a deep-sea monster consumed 847 people over 300 years, and the number of people on each ship it consumed doubled each time, how many people were on the ship it consumed in the first hundred years?",
+      "reasoning": "Step 1: Let's denote the number of people on the first ship as x.\nStep 2: Then, the number of people on the second ship would be 2x, and on the third ship, it would be 2 * 2x = 4x.\nStep 3: The total number of people consumed over the 300 years is the sum of the people on the three ships: x + 2x + 4x = 7x.\nStep 4: We are told that this total equals 847 people, so 7x = 847.\nStep 5: To find x, I divide both sides by 7: x = 847 / 7 = 121.",
+      "answer": "121"
+    }
+  ],
+  "conversations": [
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant that provides detailed explanations."
+      },
+      {
+        "role": "user",
+        "content": "If James writes a 3-page letter to 2 different friends twice a week, how many pages does he write in a year?"
+      },
+      {
+        "role": "assistant",
+        "content": "Let me think through this step by step:\n\nStep 1: First, I need to determine how many pages James writes in a week.\nStep 2: To do this, I calculate the number of pages per letter (3 pages), the number of friends (2), and the frequency (twice a week), so the total pages per week = 3 * 2 * 2 = 12 pages.\nStep 3: Since there are 52 weeks in a year, I multiply the number of pages written per week by the number of weeks in a year to get the total pages written in a year.\nStep 4: Total pages per year = 12 * 52 = 624 pages.\n\nSo the answer is: 624"
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant that provides detailed explanations."
+      },
+      {
+        "role": "user",
+        "content": "If Mark has 10 yellow flowers and there are 80% more purple flowers than yellow flowers, and 25% as many green flowers as the total of yellow and purple flowers, how many flowers does Mark have?"
+      },
+      {
+        "role": "assistant",
+        "content": "Let me think through this step by step:\n\nStep 1: First, I need to calculate the number of purple flowers, which is 80% more than the 10 yellow flowers.\nStep 2: To find 80% of 10, I calculate 10 * 0.8 = 8, and then add this to the original 10 yellow flowers to get the number of purple flowers: 10 + 8 = 18.\nStep 3: Next, I need to find the total number of yellow and purple flowers: 10 + 18 = 28.\nStep 4: Then, I calculate 25% of 28 to find the number of green flowers: 28 * 0.25 = 7.\nStep 5: Finally, I sum the number of yellow, purple, and green flowers to get the total: 10 + 18 + 7 = 35.\n\nSo the answer is: 35"
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant that provides detailed explanations."
+      },
+      {
+        "role": "user",
+        "content": "If Tina works 10 hours a day for 5 days and earns $18 an hour with overtime pay (hourly wage + 1/2 hourly wage) for hours worked beyond 8 hours, how much does she earn?"
+      },
+      {
+        "role": "assistant",
+        "content": "Let me think through this step by step:\n\nStep 1: First, I need to calculate Tina's earnings for the first 8 hours of work per day, which is 8 * $18 = $144.\nStep 2: Next, I calculate her earnings for the overtime hours worked per day. She works 2 hours of overtime (10 hours - 8 hours), and her overtime rate is $18 + ($18 * 0.5) = $27 per hour.\nStep 3: So, her daily overtime pay is 2 * $27 = $54.\nStep 4: Her total daily earnings are $144 (regular pay) + $54 (overtime pay) = $198.\nStep 5: For 5 days of work, Tina earns $198 * 5 = $990.\n\nSo the answer is: 990"
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant that provides detailed explanations."
+      },
+      {
+        "role": "user",
+        "content": "If Ken and Tony shared money and Ken got $1750, and Tony got twice as much as Ken, how much money was shared?"
+      },
+      {
+        "role": "assistant",
+        "content": "Let me think through this step by step:\n\nStep 1: First, I need to determine the amount of money Tony received, which is twice the amount Ken received.\nStep 2: Since Ken received $1750, Tony received 2 * $1750 = $3500.\nStep 3: To find the total amount of money shared, I add Ken's and Tony's shares: $1750 + $3500 = $5250.\n\nSo the answer is: 5250"
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant that provides detailed explanations."
+      },
+      {
+        "role": "user",
+        "content": "If a deep-sea monster consumed 847 people over 300 years, and the number of people on each ship it consumed doubled each time, how many people were on the ship it consumed in the first hundred years?"
+      },
+      {
+        "role": "assistant",
+        "content": "Let me think through this step by step:\n\nStep 1: Let's denote the number of people on the first ship as x.\nStep 2: Then, the number of people on the second ship would be 2x, and on the third ship, it would be 2 * 2x = 4x.\nStep 3: The total number of people consumed over the 300 years is the sum of the people on the three ships: x + 2x + 4x = 7x.\nStep 4: We are told that this total equals 847 people, so 7x = 847.\nStep 5: To find x, I divide both sides by 7: x = 847 / 7 = 121.\n\nSo the answer is: 121"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,792 @@
+{
+  "summary": "The document introduces the Byte Latent Transformer (BLT), a new byte-level LLM architecture that matches tokenization-based LLM performance at scale while improving inference efficiency and robustness. BLT encodes bytes into dynamically sized patches, allocating more compute to complex data. The model comprises three modules: a local encoder, a global latent transformer, and a local decoder. BLT achieves training flop-controlled parity with Llama 3 while using up to 50% fewer flops at inference. The architecture also improves robustness to input noise and character-level understanding.",
+  "qa_pairs": [
+    {
+      "question": "What is the Byte Latent Transformer (BLT) architecture?",
+      "answer": "The Byte Latent Transformer (BLT) is a new byte-level LLM architecture that encodes bytes into dynamically sized patches, which serve as the primary units of computation.",
+      "rating": 9
+    },
+    {
+      "question": "What is the main advantage of the BLT architecture over tokenization-based models?",
+      "answer": "The BLT architecture dynamically allocates compute where it is needed, resulting in more efficient allocation of compute than tokenization-based models.",
+      "rating": 9
+    },
+    {
+      "question": "How much fewer flops does BLT use at inference compared to Llama 3?",
+      "answer": "BLT uses up to 50% fewer flops at inference compared to Llama 3.",
+      "rating": 8
+    },
+    {
+      "question": "Where is the training and inference code for BLT released?",
+      "answer": "https://github.com/facebookresearch/blt.",
+      "rating": 8
+    },
+    {
+      "question": "What is the main factor for determining the cost of processing data during both training and inference with a given patching function in BLT?",
+      "answer": "The average size of a patch, or simply patch size.",
+      "rating": 8
+    },
+    {
+      "question": "What is the purpose of entropy patching in the given text?",
+      "answer": "Entropy patching uses entropy estimates to derive patch boundaries.",
+      "rating": 8
+    },
+    {
+      "question": "How are patch boundaries identified in entropy patching?",
+      "answer": "The text experiments with two methods to identify patch boundaries given entropies H(xi): one finds points above a global entropy threshold, and the second identifies points that are high entropy.",
+      "rating": 8
+    },
+    {
+      "question": "What is the main difference between patches and tokens in the context of BLT and tokenization-based models?",
+      "answer": "A critical difference between patches and tokens is that with tokens, the model has no direct access to the underlying byte features.",
+      "rating": 9
+    },
+    {
+      "question": "What is the main role of the Local Encoder Model in the BLT Architecture?",
+      "answer": "The main role of the Local Encoder Model is to efficiently map a sequence of input bytes into expressive patch representations.",
+      "rating": 9
+    },
+    {
+      "question": "How are the initial byte-representations for the cross-attention in the decoder initialized?",
+      "answer": "The initial byte-representations for the cross-attention are initialized as the byte embeddings from the last encoder layer i.e. hlE.",
+      "rating": 8
+    },
+    {
+      "question": "What datasets are used to pre-train the models in this paper?",
+      "answer": "The Llama 2 dataset and BLT-1T dataset.",
+      "rating": 8
+    },
+    {
+      "question": "What is the average context length used for the BLT-1T dataset?",
+      "answer": "16k bytes.",
+      "rating": 8
+    },
+    {
+      "question": "What is used to report the performance of byte and token-level models, as perplexity is tokenizer dependent?",
+      "answer": "Bits-Per-Byte (BPB), a tokenizer independent version of perplexity.",
+      "rating": 9
+    },
+    {
+      "question": "What is used for layer normalization in the transformer blocks of BLT?",
+      "answer": "RMSNorm.",
+      "rating": 8
+    },
+    {
+      "question": "What is the average token size in bytes for the Llama 2 and Llama 3 tokenizers?",
+      "answer": "The average token size is 3.7 bytes for Llama 2 and 4.4 bytes for Llama 3.",
+      "rating": 8
+    },
+    {
+      "question": "Which tokenizer is chosen and why?",
+      "answer": "The Llama 3 tokenizer with its 128k vocabulary is chosen because it performs better than Llama 2\u2019s 32k vocabulary.",
+      "rating": 8
+    },
+    {
+      "question": "How does the BLT-Entropy model perform compared to the Llama 3 model?",
+      "answer": "The BLT-Entropy model outperforms the Llama 3 model on 4 out of 7 tasks while being trained on the same number of bytes.",
+      "rating": 8
+    },
+    {
+      "question": "What is the performance comparison between BLT and Llama 3 models on tasks assessing robustness to noise and awareness of language constituents?",
+      "answer": "BLT outperforms the Llama 3 BPE model by a large margin and even improves over Llama 3.1 in many tasks.",
+      "rating": 8
+    },
+    {
+      "question": "What is observed in the scaling trends of BLT models compared to tokenization-based architectures?",
+      "answer": "BLT models achieve better scaling trends than tokenization-based architectures for both inference flop classes.",
+      "rating": 8
+    },
+    {
+      "question": "What is the effect of larger patch sizes on flops from the patch Latent Transformer?",
+      "answer": "Larger patch sizes only affect flops from the patch Latent Transformer and not the byte-level modules.",
+      "rating": 8
+    },
+    {
+      "question": "What is the performance comparison between BLT and Llama 3 models on sequence manipulation tasks?",
+      "answer": "BLT model performs better on sequence manipulation tasks compared to the tokenizer-based Llama 3 model.",
+      "rating": 8
+    },
+    {
+      "question": "How does BLT perform compared to Llama 3 on the CUTE benchmark?",
+      "answer": "BLT-Entropy outperforms both BPE Llama 3 models by more than 25 points on this benchmark.",
+      "rating": 8
+    },
+    {
+      "question": "How does BLT perform compared to Llama 3 in translating into and from English?",
+      "answer": "BLT outperforms Llama 3 by a 2-point overall advantage in translating into English and a 0.5-point advantage in translating from English.",
+      "rating": 8
+    },
+    {
+      "question": "What is the effect of initializing the global transformer model of BLT from the non-embedding parameters of Llama 3 on performance?",
+      "answer": "Initializing the global transformer model of BLT from the non-embedding parameters of Llama 3 improves performance on several benchmark tasks.",
+      "rating": 8
+    },
+    {
+      "question": "What is the effect of scaling the entropy model beyond 50m parameters on scaling performance?",
+      "answer": "There are diminishing returns when scaling beyond 50m parameters.",
+      "rating": 8
+    },
+    {
+      "question": "How does the performance of entropy-based patching compare to space patching on downstream benchmark tasks?",
+      "answer": "The gains observed using entropy-based patching on scaling trends carry forward even to downstream benchmark tasks, and space patching is a close competitor but simpler as it doesn't involve running an entropy model on the fly during training.",
+      "rating": 8
+    },
+    {
+      "question": "What is the effect of increasing the n-gram hash embedding vocabulary size on the performance of the BLT model?",
+      "answer": "Increasing the n-gram hash embedding vocabulary size improves the performance of the BLT model, but with diminishing returns after 300K hashes.",
+      "rating": 8
+    },
+    {
+      "question": "How many layers are sufficient for the local encoder when paired with hash n-gram embeddings?",
+      "answer": "Just one layer is sufficient for the local encoder when paired with hash n-gram embeddings.",
+      "rating": 8
+    },
+    {
+      "question": "What did Xue et al. (2022) find when exploring approaches for byte-level encoder decoder models?",
+      "answer": "ByT5 (Xue et al., 2022) exhibited improved robustness to noise and was competitive with tokenizer-based models with 4x less data.",
+      "rating": 9
+    },
+    {
+      "question": "What architecture did Wang et al. (2024) use to outperform byte-level transformer models?",
+      "answer": "Byte-level Mamba architecture.",
+      "rating": 8
+    },
+    {
+      "question": "Why may the scaling laws used for training BLT models be suboptimal?",
+      "answer": "Because they were calculated for BPE-level transformers.",
+      "rating": 8
+    },
+    {
+      "question": "What is the main contribution of the Byte Latent Transformer (BLT) architecture?",
+      "answer": "The Byte Latent Transformer (BLT) is a new architecture that redefines the conventional dependency on fixed-vocabulary tokenization in large language models.",
+      "rating": 9
+    },
+    {
+      "question": "What improvements does BLT offer over traditional tokenization-based approaches?",
+      "answer": "BLT effectively allocates computational resources based on data complexity, leading to significant improvements in both efficiency and robustness.",
+      "rating": 9
+    },
+    {
+      "question": "Who helped organize resources for scaling up BLT?",
+      "answer": "Gabriel Synnaeve, Ammar Rizvi, Jacob Kahn, and Michel Meyer.",
+      "rating": 8
+    },
+    {
+      "question": "Who was the Project Lead among the Core Contributors?",
+      "answer": "Gargi Ghosh.",
+      "rating": 8
+    },
+    {
+      "question": "When was the paper 'Think you have solved question answering? Try ARC, the AI2 reasoning challenge' published?",
+      "answer": "2018.",
+      "rating": 8
+    },
+    {
+      "question": "Who are the authors of the paper 'CharacterBERT: Reconciling elmo and bert for word-level open-vocabulary representations from characters'?",
+      "answer": "Hicham El Boukkouri, Olivier Ferret, Thomas Lavergne, Hiroshi Noji, Pierre Zweigenbaum, and Jun\u2019ichi Tsujii.",
+      "rating": 9
+    },
+    {
+      "question": "When was the paper 'Decoupled weight decay regularization' by Ilya Loshchilov and Frank Hutter published?",
+      "answer": "2017.",
+      "rating": 8
+    },
+    {
+      "question": "Who are the authors of the paper 'Language models are unsupervised multitask learners'?",
+      "answer": "Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et al.",
+      "rating": 9
+    },
+    {
+      "question": "How is the rolling polynomial hash of a byte n-gram gi,n defined?",
+      "answer": "Hash(gi,n) = \u2211[bi\u2212j+1 * a^(j\u22121)] from j=1 to n, where a is a 10-digit prime number.",
+      "rating": 9
+    },
+    {
+      "question": "How is the embedding obtained for infrequent byte-grams in the frequency-based n-gram embeddings?",
+      "answer": "Its embedding is obtained from encoder hash embeddings instead.",
+      "rating": 8
+    }
+  ],
+  "conversations": [
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the Byte Latent Transformer (BLT) architecture?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Byte Latent Transformer (BLT) is a new byte-level LLM architecture that encodes bytes into dynamically sized patches, which serve as the primary units of computation."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the main advantage of the BLT architecture over tokenization-based models?"
+      },
+      {
+        "role": "assistant",
+        "content": "The BLT architecture dynamically allocates compute where it is needed, resulting in more efficient allocation of compute than tokenization-based models."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How much fewer flops does BLT use at inference compared to Llama 3?"
+      },
+      {
+        "role": "assistant",
+        "content": "BLT uses up to 50% fewer flops at inference compared to Llama 3."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "Where is the training and inference code for BLT released?"
+      },
+      {
+        "role": "assistant",
+        "content": "https://github.com/facebookresearch/blt."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the main factor for determining the cost of processing data during both training and inference with a given patching function in BLT?"
+      },
+      {
+        "role": "assistant",
+        "content": "The average size of a patch, or simply patch size."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the purpose of entropy patching in the given text?"
+      },
+      {
+        "role": "assistant",
+        "content": "Entropy patching uses entropy estimates to derive patch boundaries."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How are patch boundaries identified in entropy patching?"
+      },
+      {
+        "role": "assistant",
+        "content": "The text experiments with two methods to identify patch boundaries given entropies H(xi): one finds points above a global entropy threshold, and the second identifies points that are high entropy."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the main difference between patches and tokens in the context of BLT and tokenization-based models?"
+      },
+      {
+        "role": "assistant",
+        "content": "A critical difference between patches and tokens is that with tokens, the model has no direct access to the underlying byte features."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the main role of the Local Encoder Model in the BLT Architecture?"
+      },
+      {
+        "role": "assistant",
+        "content": "The main role of the Local Encoder Model is to efficiently map a sequence of input bytes into expressive patch representations."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How are the initial byte-representations for the cross-attention in the decoder initialized?"
+      },
+      {
+        "role": "assistant",
+        "content": "The initial byte-representations for the cross-attention are initialized as the byte embeddings from the last encoder layer i.e. hlE."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What datasets are used to pre-train the models in this paper?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Llama 2 dataset and BLT-1T dataset."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the average context length used for the BLT-1T dataset?"
+      },
+      {
+        "role": "assistant",
+        "content": "16k bytes."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is used to report the performance of byte and token-level models, as perplexity is tokenizer dependent?"
+      },
+      {
+        "role": "assistant",
+        "content": "Bits-Per-Byte (BPB), a tokenizer independent version of perplexity."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is used for layer normalization in the transformer blocks of BLT?"
+      },
+      {
+        "role": "assistant",
+        "content": "RMSNorm."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the average token size in bytes for the Llama 2 and Llama 3 tokenizers?"
+      },
+      {
+        "role": "assistant",
+        "content": "The average token size is 3.7 bytes for Llama 2 and 4.4 bytes for Llama 3."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "Which tokenizer is chosen and why?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Llama 3 tokenizer with its 128k vocabulary is chosen because it performs better than Llama 2\u2019s 32k vocabulary."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How does the BLT-Entropy model perform compared to the Llama 3 model?"
+      },
+      {
+        "role": "assistant",
+        "content": "The BLT-Entropy model outperforms the Llama 3 model on 4 out of 7 tasks while being trained on the same number of bytes."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the performance comparison between BLT and Llama 3 models on tasks assessing robustness to noise and awareness of language constituents?"
+      },
+      {
+        "role": "assistant",
+        "content": "BLT outperforms the Llama 3 BPE model by a large margin and even improves over Llama 3.1 in many tasks."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is observed in the scaling trends of BLT models compared to tokenization-based architectures?"
+      },
+      {
+        "role": "assistant",
+        "content": "BLT models achieve better scaling trends than tokenization-based architectures for both inference flop classes."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the effect of larger patch sizes on flops from the patch Latent Transformer?"
+      },
+      {
+        "role": "assistant",
+        "content": "Larger patch sizes only affect flops from the patch Latent Transformer and not the byte-level modules."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the performance comparison between BLT and Llama 3 models on sequence manipulation tasks?"
+      },
+      {
+        "role": "assistant",
+        "content": "BLT model performs better on sequence manipulation tasks compared to the tokenizer-based Llama 3 model."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How does BLT perform compared to Llama 3 on the CUTE benchmark?"
+      },
+      {
+        "role": "assistant",
+        "content": "BLT-Entropy outperforms both BPE Llama 3 models by more than 25 points on this benchmark."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How does BLT perform compared to Llama 3 in translating into and from English?"
+      },
+      {
+        "role": "assistant",
+        "content": "BLT outperforms Llama 3 by a 2-point overall advantage in translating into English and a 0.5-point advantage in translating from English."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the effect of initializing the global transformer model of BLT from the non-embedding parameters of Llama 3 on performance?"
+      },
+      {
+        "role": "assistant",
+        "content": "Initializing the global transformer model of BLT from the non-embedding parameters of Llama 3 improves performance on several benchmark tasks."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the effect of scaling the entropy model beyond 50m parameters on scaling performance?"
+      },
+      {
+        "role": "assistant",
+        "content": "There are diminishing returns when scaling beyond 50m parameters."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How does the performance of entropy-based patching compare to space patching on downstream benchmark tasks?"
+      },
+      {
+        "role": "assistant",
+        "content": "The gains observed using entropy-based patching on scaling trends carry forward even to downstream benchmark tasks, and space patching is a close competitor but simpler as it doesn't involve running an entropy model on the fly during training."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the effect of increasing the n-gram hash embedding vocabulary size on the performance of the BLT model?"
+      },
+      {
+        "role": "assistant",
+        "content": "Increasing the n-gram hash embedding vocabulary size improves the performance of the BLT model, but with diminishing returns after 300K hashes."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How many layers are sufficient for the local encoder when paired with hash n-gram embeddings?"
+      },
+      {
+        "role": "assistant",
+        "content": "Just one layer is sufficient for the local encoder when paired with hash n-gram embeddings."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What did Xue et al. (2022) find when exploring approaches for byte-level encoder decoder models?"
+      },
+      {
+        "role": "assistant",
+        "content": "ByT5 (Xue et al., 2022) exhibited improved robustness to noise and was competitive with tokenizer-based models with 4x less data."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What architecture did Wang et al. (2024) use to outperform byte-level transformer models?"
+      },
+      {
+        "role": "assistant",
+        "content": "Byte-level Mamba architecture."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "Why may the scaling laws used for training BLT models be suboptimal?"
+      },
+      {
+        "role": "assistant",
+        "content": "Because they were calculated for BPE-level transformers."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What is the main contribution of the Byte Latent Transformer (BLT) architecture?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Byte Latent Transformer (BLT) is a new architecture that redefines the conventional dependency on fixed-vocabulary tokenization in large language models."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "What improvements does BLT offer over traditional tokenization-based approaches?"
+      },
+      {
+        "role": "assistant",
+        "content": "BLT effectively allocates computational resources based on data complexity, leading to significant improvements in both efficiency and robustness."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "Who helped organize resources for scaling up BLT?"
+      },
+      {
+        "role": "assistant",
+        "content": "Gabriel Synnaeve, Ammar Rizvi, Jacob Kahn, and Michel Meyer."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "Who was the Project Lead among the Core Contributors?"
+      },
+      {
+        "role": "assistant",
+        "content": "Gargi Ghosh."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "When was the paper 'Think you have solved question answering? Try ARC, the AI2 reasoning challenge' published?"
+      },
+      {
+        "role": "assistant",
+        "content": "2018."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "Who are the authors of the paper 'CharacterBERT: Reconciling elmo and bert for word-level open-vocabulary representations from characters'?"
+      },
+      {
+        "role": "assistant",
+        "content": "Hicham El Boukkouri, Olivier Ferret, Thomas Lavergne, Hiroshi Noji, Pierre Zweigenbaum, and Jun\u2019ichi Tsujii."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "When was the paper 'Decoupled weight decay regularization' by Ilya Loshchilov and Frank Hutter published?"
+      },
+      {
+        "role": "assistant",
+        "content": "2017."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "Who are the authors of the paper 'Language models are unsupervised multitask learners'?"
+      },
+      {
+        "role": "assistant",
+        "content": "Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et al."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How is the rolling polynomial hash of a byte n-gram gi,n defined?"
+      },
+      {
+        "role": "assistant",
+        "content": "Hash(gi,n) = \u2211[bi\u2212j+1 * a^(j\u22121)] from j=1 to n, where a is a 10-digit prime number."
+      }
+    ],
+    [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant that provides accurate, detailed responses."
+      },
+      {
+        "role": "user",
+        "content": "How is the embedding obtained for infrequent byte-grams in the frequency-based n-gram embeddings?"
+      },
+      {
+        "role": "assistant",
+        "content": "Its embedding is obtained from encoder hash embeddings instead."
+      }
+    ]
+  ],
+  "metrics": {
+    "total": 48,
+    "filtered": 41,
+    "retention_rate": 0.85,
+    "avg_score": 8.1
+  }
+}
