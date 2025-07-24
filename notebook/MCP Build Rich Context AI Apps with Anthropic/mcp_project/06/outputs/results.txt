@@ -1,0 +1,21 @@
+# Findings on Multi-Agent Systems in Deep Learning
+
+## Search Process
+I started by exploring the deeplearning.ai website, where I discovered that "Multi-Agent Systems" is an emerging and important topic in AI research. The website mentioned this as one of the areas getting stronger in the AI field.
+
+## Papers Found
+
+### Paper 1: From Single Agent to Multi-Agent: Improving Traffic Signal Control
+- **Authors**: Maksim Tislenko, Dmitrii Kisilev
+- **Published**: June 19, 2024
+- **Summary**: This paper explores how multi-agent systems can improve traffic signal control in urban environments. As urbanization accelerates, efficient traffic management becomes increasingly important. The researchers compared single-agent approaches with multi-agent implementations across two datasets and found that multi-agent systems often improved performance, particularly when using fine-tuned large language models. The paper demonstrates a practical application of multi-agent systems to a real-world problem.
+
+### Paper 2: Geometrization of deep networks for the interpretability of deep learning systems
+- **Authors**: Xiao Dong, Ling Zhou
+- **Published**: January 6, 2019
+- **Summary**: While not directly focused on multi-agent systems, this paper discusses the geometrization of deep networks as a way to improve the interpretability of deep learning systems. This approach creates connections between physics, geometry, deep networks, and quantum computation. The authors suggest that understanding the geometric principles underlying deep learning could help solve the "black box" problem in AI systems. This geometric understanding could potentially be applied to multi-agent systems to make their collaborative behaviors more interpretable.
+
+## Conclusion
+Multi-agent systems represent an important frontier in AI research where multiple intelligent agents work together to solve complex problems. The traffic signal control paper demonstrates the practical benefits of this approach, showing how multiple agents can outperform single-agent systems in urban management tasks. Meanwhile, the geometrization paper suggests new ways to understand the underlying principles of deep learning systems, which could be valuable for developing more interpretable multi-agent architectures.
+
+As deeplearning.ai noted in their content, multi-agent systems are getting stronger and represent a promising direction for AI development. These systems could be particularly valuable for complex, distributed problems where collaboration between different specialized agents is beneficial.

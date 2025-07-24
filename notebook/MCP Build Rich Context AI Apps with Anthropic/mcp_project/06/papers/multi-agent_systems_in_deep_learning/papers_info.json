@@ -1,0 +1,22 @@
+{
+  "2406.13693v1": {
+    "title": "From Single Agent to Multi-Agent: Improving Traffic Signal Control",
+    "authors": [
+      "Maksim Tislenko",
+      "Dmitrii Kisilev"
+    ],
+    "summary": "Due to accelerating urbanization, the importance of solving the signal\ncontrol problem increases. This paper analyzes various existing methods and\nsuggests options for increasing the number of agents to reduce the average\ntravel time. Experiments were carried out with 2 datasets. The results show\nthat in some cases, the implementation of multiple agents can improve existing\nmethods. For a fine-tuned large language model approach there is small\nenhancement on all metrics.",
+    "pdf_url": "http://arxiv.org/pdf/2406.13693v1",
+    "published": "2024-06-19"
+  },
+  "1901.02354v2": {
+    "title": "Geometrization of deep networks for the interpretability of deep learning systems",
+    "authors": [
+      "Xiao Dong",
+      "Ling Zhou"
+    ],
+    "summary": "How to understand deep learning systems remains an open problem. In this\npaper we propose that the answer may lie in the geometrization of deep\nnetworks. Geometrization is a bridge to connect physics, geometry, deep network\nand quantum computation and this may result in a new scheme to reveal the rule\nof the physical world. By comparing the geometry of image matching and deep\nnetworks, we show that geometrization of deep networks can be used to\nunderstand existing deep learning systems and it may also help to solve the\ninterpretability problem of deep learning systems.",
+    "pdf_url": "http://arxiv.org/pdf/1901.02354v2",
+    "published": "2019-01-06"
+  }
+}

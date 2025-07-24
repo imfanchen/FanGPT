@@ -1,0 +1,109 @@
++---------------------------------------------------+
+|       MODEL CONTEXT PROTOCOL ARCHITECTURE         |
++---------------------------------------------------+
+
++---------------+          +---------------+
+|               |          |               |
+|     HOST      |          |    SERVER     |
+| (LLM App/IDE) |<-------->| (Context,     |
+|               |          |  Tools, etc.) |
++-------+-------+          +---------------+
+        |
+        | Contains
+        v
++-------+-------+
+|               |
+|    CLIENT     |
+| (1:1 with     |
+|  server)      |
++---------------+
+
+PROTOCOL LAYERS:
+===============================================
+
++---------------------------------------------------+
+| PROTOCOL LAYER                                    |
+| - Message framing                                 |
+| - Request/response linking                        |
+| - Classes: Protocol, Client, Server               |
++---------------------------------------------------+
+                     |
+                     v
++---------------------------------------------------+
+| TRANSPORT LAYER                                   |
+| - Stdio Transport (local processes)               |
+| - Streamable HTTP Transport (remote)              |
+| - All using JSON-RPC 2.0                          |
++---------------------------------------------------+
+
+MESSAGE TYPES:
+===============================================
+
++--------------+       +--------------+
+|              |       |              |
+|   REQUEST    +------>+   RESULT     |
+|              |       |              |
++--------------+       +--------------+
+       |
+       +-------------+
+                     |
+                     v
+                +--------------+
+                |              |
+                |    ERROR     |
+                |              |
+                +--------------+
+
++--------------+
+|              |
+| NOTIFICATION |  (one-way message)
+|              |
++--------------+
+
+CONNECTION LIFECYCLE:
+===============================================
+
+    +----------------+
+    | INITIALIZATION |
+    +-------+--------+
+            |
+            v
++------------------------+
+| 1. Client -> initialize|
+| 2. Server -> response  |
+| 3. Client -> ack       |
++----------+-------------+
+           |
+           v
++------------------------+
+|    MESSAGE EXCHANGE    |
+| - Request-Response     |
+| - Notifications        |
++----------+-------------+
+           |
+           v
++------------------------+
+|      TERMINATION       |
+| - Clean shutdown       |
+| - Disconnection        |
+| - Error conditions     |
++------------------------+
+
+KEY FEATURES:
+===============================================
+
++---------------------+    +---------------------+
+| ERROR HANDLING      |    | SECURITY            |
+| - Standard codes    |    | - Transport security|
+| - Custom codes      |    | - Message validation|
+| - Error propagation |    | - Resource control  |
++---------------------+    | - Error safety      |
+                           +---------------------+
+
++---------------------+    +---------------------+
+| BEST PRACTICES      |    | MONITORING          |
+| - Transport choice  |    | - Logging           |
+| - Message handling  |    | - Diagnostics       |
+| - Progress reporting|    | - Testing           |
+| - Error management  |    |                     |
++---------------------+    +---------------------+
